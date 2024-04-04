@@ -1,6 +1,6 @@
 # Rick and Morty Universe Explorer
 
-Explore the vast universe of Rick and Morty with our intuitive and highly performant Android application. Dive into the adventures of Rick, Morty, and the countless characters they encounter across the multiverse, all from the palm of your hand.
+Explore the vast universe of Rick and Morty with this simple Android application designed to showcase Android architecture and engineering patterns. Dive into the adventures of Rick, Morty, and the countless characters they encounter across the multiverse, all from the palm of your hand.
 
 ![Your Image Placeholder](/readme_logo.webp)
 
