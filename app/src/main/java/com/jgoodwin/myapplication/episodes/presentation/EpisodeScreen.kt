@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun EpisodeScreen() {
+fun EpisodeScreen(episodeId: Int? = null) {
     val episodesViewModel: EpisodesViewModel = hiltViewModel()
     val state by episodesViewModel.state.collectAsStateWithLifecycle()
 

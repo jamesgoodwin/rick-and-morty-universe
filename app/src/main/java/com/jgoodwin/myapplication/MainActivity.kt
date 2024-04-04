@@ -32,6 +32,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.jgoodwin.myapplication.NavigationItem.Companion.EPISODE_ID_NAVIGATION_PARAM
 import com.jgoodwin.myapplication.characters.presentation.CharacterScreen
 import com.jgoodwin.myapplication.characters.presentation.CharacterViewModel
 import com.jgoodwin.myapplication.domain.Location
@@ -79,8 +80,13 @@ fun MainScreenPreview() {
 
 sealed class NavigationItem(val route: String, val icon: ImageVector, val title: String) {
     data object Characters : NavigationItem("characters", Icons.Filled.Face, "Characters")
-    data object Episodes : NavigationItem("episodes", Icons.Filled.List, "Episodes")
+    data object Episodes : NavigationItem("episodes?episode={episodeId}", Icons.Filled.List, "Episodes")
     data object Locations : NavigationItem("locations", Icons.Filled.Place, "Locations")
+
+    companion object {
+        const val EPISODE_ID_NAVIGATION_PARAM = "{episodeId}"
+    }
+
 }
 
 @Composable
@@ -104,7 +110,7 @@ fun Navigation(navController: NavHostController) {
 }
 
 fun navigateEpisode(episodeId: Int, navController: NavHostController) {
-    navController.navigate(NavigationItem.Episodes.route) {
+    navController.navigate(NavigationItem.Episodes.route.replace(EPISODE_ID_NAVIGATION_PARAM, episodeId.toString())) {
         popUpTo(navController.graph.id) {
             inclusive = true
         }

@@ -19,20 +19,6 @@ import javax.inject.Singleton
 object CharactersModule {
 
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().build()
-    }
-
-    @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl("https://rickandmortyapi.com/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    @Provides
     @Singleton
     fun provideCharacterApiService(retrofit: Retrofit): CharacterApiService {
         return retrofit.create(CharacterApiService::class.java)
