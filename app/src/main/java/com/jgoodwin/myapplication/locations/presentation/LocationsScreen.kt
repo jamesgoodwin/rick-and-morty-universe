@@ -1,6 +1,7 @@
 package com.jgoodwin.myapplication.locations.presentation
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,17 +17,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun LocationsScreen() {
+fun LocationsScreen(
+    onLocationResidentsClicked: (Int) -> Unit,
+    onLocationTypeClicked: (String) -> Unit,
+    onLocationDimensionClicked: (String) -> Unit
+) {
     val locationViewModel: LocationViewModel = hiltViewModel()
     val state by locationViewModel.state.collectAsState()
 
     LazyColumn(
-//        verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.fillMaxSize()
     ) {
         if (state.isEmpty()) {
@@ -39,10 +41,33 @@ fun LocationsScreen() {
             }
         }
         items(state) { location ->
-            ListItem(headlineContent = { Text(text = location.name) },
-                supportingContent = { Text(text = "${location.type} - ${location.dimension} - ${location.residents.count()} residents")})
+            ListItem(
+                headlineContent = { Text(text = location.name) },
+                supportingContent = {
+                    Row {
+                        ClickableText(
+                            text = location.type,
+                            onClick = { onLocationTypeClicked(location.type) })
+                        Text(text = " - ")
+                        ClickableText(text = location.dimension, onClick = { onLocationDimensionClicked(location.dimension)})
+                        Text(text = " - ")
+                        ClickableText(
+                            text = "${location.residents.count()} residents",
+                            onClick = { onLocationResidentsClicked(location.id) })
+                    }
+                },
+            )
             HorizontalDivider()
         }
     }
 
+}
+
+@Composable
+fun ClickableText(text: String, onClick: () -> Unit) {
+    Text(
+        text = text,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.clickable(onClick = onClick)
+    )
 }

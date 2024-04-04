@@ -20,7 +20,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -81,7 +80,9 @@ fun MainScreenPreview() {
 
 sealed class NavigationItem(val route: String, val icon: ImageVector, val title: String) {
     data object Characters : NavigationItem("characters", Icons.Filled.Face, "Characters")
-    data object Episodes : NavigationItem("episodes?episode={episodeId}", Icons.Filled.List, "Episodes")
+    data object Episodes :
+        NavigationItem("episodes?episode={episodeId}", Icons.Filled.List, "Episodes")
+
     data object Locations : NavigationItem("locations", Icons.Filled.Place, "Locations")
 
     companion object {
@@ -105,13 +106,18 @@ fun Navigation(navController: NavHostController) {
             EpisodeScreen()
         }
         composable(NavigationItem.Locations.route) {
-            LocationsScreen()
+            LocationsScreen({}, {}, {})
         }
     }
 }
 
 fun navigateEpisode(episodeId: Int, navController: NavHostController) {
-    navController.navigate(NavigationItem.Episodes.route.replace(EPISODE_ID_NAVIGATION_PARAM, episodeId.toString())) {
+    navController.navigate(
+        NavigationItem.Episodes.route.replace(
+            EPISODE_ID_NAVIGATION_PARAM,
+            episodeId.toString()
+        )
+    ) {
         popUpTo(navController.graph.id) {
             inclusive = true
         }
