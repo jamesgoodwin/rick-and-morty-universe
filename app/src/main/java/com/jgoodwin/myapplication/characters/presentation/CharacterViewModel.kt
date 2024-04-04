@@ -14,19 +14,20 @@ import javax.inject.Inject
 class CharacterViewModel @Inject constructor(private val getCharactersUseCase: GetCharactersUseCase) :
     ViewModel() {
 
-    internal val mutableState = MutableStateFlow<State>(State.Loading)
-    val state: StateFlow<State> get() = mutableState
+    private val mutableState = MutableStateFlow<CharacterViewState>(CharacterViewState.Loading)
+    val state: StateFlow<CharacterViewState> get() = mutableState
 
     init {
         viewModelScope.launch {
             val characters = getCharactersUseCase.invoke()
-            mutableState.value = State.Success(characters)
+            mutableState.value = CharacterViewState.Success(characters)
         }
     }
 
-    sealed class State {
-        data object Loading : State()
-        class Success(val results: List<CharacterSummary>) : State()
+    sealed class CharacterViewState {
+        data object Loading : CharacterViewState()
+        class Error(val message: String) : CharacterViewState()
+        class Success(val results: List<CharacterSummary>) : CharacterViewState()
     }
 
 }

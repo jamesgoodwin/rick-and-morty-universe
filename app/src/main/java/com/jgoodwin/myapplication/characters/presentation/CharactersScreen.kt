@@ -8,35 +8,38 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jgoodwin.myapplication.domain.Location
 
 @Composable
-fun CharacterScreen() {
-    val characterViewModel: CharacterViewModel = hiltViewModel()
-    val state by characterViewModel.state.collectAsStateWithLifecycle()
-
-    when (val newState = state) {
-        CharacterViewModel.State.Loading -> {
+fun CharacterScreen(
+    state: CharacterViewModel.CharacterViewState,
+    onLocationClicked: (Location) -> Unit? = {},
+    onEpisodeClicked: (Int) -> Unit
+) {
+    when (state) {
+        CharacterViewModel.CharacterViewState.Loading -> {
             CircularProgressIndicator(
                 modifier = Modifier
                     .fillMaxSize()
                     .wrapContentSize(align = Alignment.Center)
             )
         }
-        is CharacterViewModel.State.Success -> {
+
+        is CharacterViewModel.CharacterViewState.Success -> {
             LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxSize()
+                verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.fillMaxSize()
             ) {
-                items(newState.results) { character ->
-                    CharacterImageCard(character)
+                items(state.results) { character ->
+                    CharacterImageCard(character, onLocationClicked, onEpisodeClicked)
                 }
             }
+        }
+
+        is CharacterViewModel.CharacterViewState.Error -> {
+            Text(text = state.message)
         }
     }
 }

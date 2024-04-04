@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +31,11 @@ import com.jgoodwin.myapplication.domain.Location
 import com.jgoodwin.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
-fun CharacterImageCard(character: CharacterSummary) {
+fun CharacterImageCard(
+    character: CharacterSummary,
+    onLocationClicked: (Location) -> Unit? = {},
+    onEpisodeClicked:(Int) -> Unit? = {}
+) {
     val linkTextStyle = TextStyle(
         color = MaterialTheme.colorScheme.primary,
         fontWeight = FontWeight.Bold
@@ -63,8 +66,8 @@ fun CharacterImageCard(character: CharacterSummary) {
                 )
                 Row {
                     val statusIndicatorColour = when (character.status) {
-                        "alive" -> Color.Green
-                        "dead" -> Color.Red
+                        "Alive" -> Color.Green
+                        "Dead" -> Color.Red
                         else -> Color.Gray
                     }
                     Box(
@@ -76,17 +79,18 @@ fun CharacterImageCard(character: CharacterSummary) {
                     )
                     Text(
                         modifier = Modifier.padding(start = 4.dp),
-                        text = "${character.status} - ${character.species}")
+                        text = "${character.status} - ${character.species}"
+                    )
                 }
 
                 Text(
-                    modifier = Modifier.clickable(onClick = {}),
+                    modifier = Modifier.clickable(onClick = { onLocationClicked(character.location) }),
                     style = linkTextStyle,
                     text = "Location: ${character.location.name}"
                 )
 
                 Text(
-                    modifier = Modifier.clickable(onClick = {}),
+                    modifier = Modifier.clickable(onClick = { onEpisodeClicked(character.episodeId) }),
                     style = linkTextStyle,
                     text = "First seen in: ${character.episode}"
                 )
@@ -113,7 +117,8 @@ fun CharactersScreenPreview() {
                 origin = Location(name = "Earth", url = ""),
                 location = Location(name = "Earth", url = ""),
                 image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                episode = "Close Rick-counters of the Rick Kind"
+                episode = "Close Rick-counters of the Rick Kind",
+                episodeId = 1
             )
         )
     }

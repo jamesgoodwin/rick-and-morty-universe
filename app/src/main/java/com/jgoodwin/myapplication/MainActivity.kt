@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -31,6 +33,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jgoodwin.myapplication.characters.presentation.CharacterScreen
+import com.jgoodwin.myapplication.characters.presentation.CharacterViewModel
+import com.jgoodwin.myapplication.domain.Location
 import com.jgoodwin.myapplication.episodes.presentation.EpisodeScreen
 import com.jgoodwin.myapplication.locations.presentation.LocationsScreen
 
@@ -46,6 +50,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+val items = listOf(
+    NavigationItem.Characters,
+    NavigationItem.Episodes,
+    NavigationItem.Locations
+)
 
 @Composable
 fun MainScreen() {
@@ -77,7 +87,12 @@ sealed class NavigationItem(val route: String, val icon: ImageVector, val title:
 fun Navigation(navController: NavHostController) {
     NavHost(navController, startDestination = NavigationItem.Characters.route) {
         composable(NavigationItem.Characters.route) {
-            CharacterScreen()
+            val characterViewModel: CharacterViewModel = hiltViewModel()
+            val state by characterViewModel.state.collectAsStateWithLifecycle()
+            CharacterScreen(
+                state,
+                { location -> navigateLocation(location, navController) },
+                { episodeId -> navigateEpisode(episodeId, navController) })
         }
         composable(NavigationItem.Episodes.route) {
             EpisodeScreen()
@@ -88,13 +103,27 @@ fun Navigation(navController: NavHostController) {
     }
 }
 
+fun navigateEpisode(episodeId: Int, navController: NavHostController) {
+    navController.navigate(NavigationItem.Episodes.route) {
+        popUpTo(navController.graph.id) {
+            inclusive = true
+        }
+    }
+}
+
+fun navigateLocation(location: Location, navController: NavHostController) {
+    navController.navigate(NavigationItem.Locations.route) {
+        popUpTo(navController.graph.id) {
+            inclusive = true
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar() {
     TopAppBar(
-        title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) },
-//        backgroundColor = colorResource(id = R.color.black),
-//        contentColor = Color.White
+        title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) }
     )
 }
 
@@ -106,13 +135,7 @@ fun TopBarPreview() {
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-    val items = listOf(
-        NavigationItem.Characters,
-        NavigationItem.Episodes,
-        NavigationItem.Locations
-    )
     NavigationBar(
-//        backgroundColor = colorResource(id = R.color.black),
         contentColor = Color.White
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -127,8 +150,6 @@ fun BottomNavigationBar(navController: NavController) {
                     )
                 },
                 label = { Text(text = item.title) },
-//                selectedContentColor = Color.White,
-//                unselectedContentColor = Color.White.copy(0.4f),
                 alwaysShowLabel = true,
                 selected = currentRoute == item.route,
                 onClick = {

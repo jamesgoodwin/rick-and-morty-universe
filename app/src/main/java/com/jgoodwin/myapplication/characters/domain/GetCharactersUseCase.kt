@@ -12,8 +12,10 @@ data class CharacterSummary(
     val origin: Location,
     val location: Location,
     val image: String,
-    val episode: String
-)
+    val episode: String,
+    val episodeId: Int
+) {
+}
 
 class GetCharactersUseCase(
     private val characterRepository: CharacterRepository,
@@ -34,7 +36,8 @@ class GetCharactersUseCase(
                 origin = it.origin,
                 location = it.location,
                 image = it.image,
-                episode = episode.name
+                episode = episode.name,
+                episodeId = episode.id
             )
         }
     }
