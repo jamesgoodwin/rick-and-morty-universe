@@ -103,7 +103,7 @@ fun Navigation(navController: NavHostController) {
                 { episodeId -> navigateEpisode(episodeId, navController) })
         }
         composable(NavigationItem.Episodes.route) {
-            EpisodeScreen()
+            EpisodeScreen(onEpisodeCharactersClicked = {})
         }
         composable(NavigationItem.Locations.route) {
             LocationsScreen({}, {}, {})

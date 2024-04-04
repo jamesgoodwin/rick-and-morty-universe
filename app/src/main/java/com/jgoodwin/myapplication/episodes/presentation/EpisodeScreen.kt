@@ -1,6 +1,6 @@
 package com.jgoodwin.myapplication.episodes.presentation
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -19,9 +19,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jgoodwin.myapplication.locations.presentation.ClickableText
 
 @Composable
-fun EpisodeScreen(episodeId: Int? = null) {
+fun EpisodeScreen(episodeId: Int? = null, onEpisodeCharactersClicked: (Int) -> Unit) {
     val episodesViewModel: EpisodesViewModel = hiltViewModel()
     val state by episodesViewModel.state.collectAsStateWithLifecycle()
 
@@ -39,16 +40,13 @@ fun EpisodeScreen(episodeId: Int? = null) {
         }
         items(state) { episode ->
             ListItem(headlineContent = { Text(text = episode.name) },
-                supportingContent = { Text(text = "${episode.episode} - ${episode.air_date} - ${episode.characters.count()} characters")})
+                supportingContent = {
+                    Row {
+                        Text(text = "${episode.episode} - ${episode.air_date} - ")
+                        ClickableText(text = "${episode.characters.count()} characters", onClick = { onEpisodeCharactersClicked(episode.id) })
+                    }
+                })
             HorizontalDivider()
-            /*Text(
-                color = MaterialTheme.colorScheme.primary,
-                text = episode.name,
-                fontSize = MaterialTheme.typography.headlineSmall.fontSize
-            )
-            Text(color = MaterialTheme.colorScheme.primary, text = "Airing date: ${episode.air_date}")
-            Text(color = MaterialTheme.colorScheme.primary, text = "Episode: ${episode.episode}")
-            Text(color = MaterialTheme.colorScheme.primary, text = "Characters: ${episode.characters.count()}")*/
 
         }
     }
