@@ -2,7 +2,10 @@
 
 Explore the vast universe of Rick and Morty with this simple Android application designed to showcase Android architecture and engineering patterns. Dive into the adventures of Rick, Morty, and the countless characters they encounter across the multiverse, all from the palm of your hand.
 
+[![Android CI](https://github.com/jamesgoodwin/rick-and-morty-universe/actions/workflows/android.yml/badge.svg)](https://github.com/jamesgoodwin/rick-and-morty-universe/actions/workflows/android.yml)
+
 ![Rick And Morty Image](/readme_logo.webp)
+
 
 ## Features
 
