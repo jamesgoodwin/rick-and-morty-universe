@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -142,7 +143,7 @@ fun TopBarPreview() {
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     NavigationBar(
-        contentColor = Color.White
+//        contentColor = Color.White
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -152,7 +153,7 @@ fun BottomNavigationBar(navController: NavController) {
                     Icon(
                         imageVector = item.icon,
                         contentDescription = item.title,
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 },
                 label = { Text(text = item.title) },

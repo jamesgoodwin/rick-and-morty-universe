@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 //import androidx.compose.material.Text
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +26,7 @@ fun LocationsScreen() {
     val state by locationViewModel.state.collectAsState()
 
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+//        verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.fillMaxSize()
     ) {
         if (state.isEmpty()) {
@@ -37,14 +39,9 @@ fun LocationsScreen() {
             }
         }
         items(state) { location ->
-            Text(
-                color = MaterialTheme.colorScheme.primary,
-                text = location.name,
-                fontSize = MaterialTheme.typography.headlineSmall.fontSize
-            )
-            Text(color = MaterialTheme.colorScheme.primary, text = "Type: ${location.type}")
-            Text(color = MaterialTheme.colorScheme.primary, text = "Dimension: ${location.dimension}")
-            Text(color = MaterialTheme.colorScheme.primary, text = "Residents: ${location.residents.count()}")
+            ListItem(headlineContent = { Text(text = location.name) },
+                supportingContent = { Text(text = "${location.type} - ${location.dimension} - ${location.residents.count()} residents")})
+            HorizontalDivider()
         }
     }
 
