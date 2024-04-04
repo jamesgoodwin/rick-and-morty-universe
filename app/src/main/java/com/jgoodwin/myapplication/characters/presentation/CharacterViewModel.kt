@@ -14,7 +14,7 @@ import javax.inject.Inject
 class CharacterViewModel @Inject constructor(private val getCharactersUseCase: GetCharactersUseCase) :
     ViewModel() {
 
-    private val mutableState = MutableStateFlow<State>(State.Loading)
+    internal val mutableState = MutableStateFlow<State>(State.Loading)
     val state: StateFlow<State> get() = mutableState
 
     init {

@@ -1,20 +1,27 @@
 package com.jgoodwin.myapplication.characters.presentation
 
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,12 +61,29 @@ fun CharacterImageCard(character: CharacterSummary) {
                         fontSize = MaterialTheme.typography.headlineSmall.fontSize
                     )
                 )
-                Text(text = "${character.status} - ${character.species}")
+                Row {
+                    val statusIndicatorColour = when (character.status) {
+                        "alive" -> Color.Green
+                        "dead" -> Color.Red
+                        else -> Color.Gray
+                    }
+                    Box(
+                        modifier = Modifier
+                            .size(10.dp)
+                            .clip(CircleShape)
+                            .align(Alignment.CenterVertically)
+                            .background(statusIndicatorColour)
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 4.dp),
+                        text = "${character.status} - ${character.species}")
+                }
 
                 Text(
                     modifier = Modifier.clickable(onClick = {}),
                     style = linkTextStyle,
-                    text = "Location: ${character.location.name}")
+                    text = "Location: ${character.location.name}"
+                )
 
                 Text(
                     modifier = Modifier.clickable(onClick = {}),

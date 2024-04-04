@@ -3,7 +3,6 @@ package com.jgoodwin.myapplication
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.jgoodwin.myapplication.characters.presentation.CharactersScreen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -31,6 +30,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.jgoodwin.myapplication.characters.presentation.CharacterScreen
 import com.jgoodwin.myapplication.episodes.presentation.EpisodeScreen
 import com.jgoodwin.myapplication.locations.presentation.LocationsScreen
 
@@ -77,7 +77,7 @@ sealed class NavigationItem(val route: String, val icon: ImageVector, val title:
 fun Navigation(navController: NavHostController) {
     NavHost(navController, startDestination = NavigationItem.Characters.route) {
         composable(NavigationItem.Characters.route) {
-            CharactersScreen()
+            CharacterScreen()
         }
         composable(NavigationItem.Episodes.route) {
             EpisodeScreen()
