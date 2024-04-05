@@ -2,8 +2,6 @@ package com.jgoodwin.myapplication.episodes.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jgoodwin.myapplication.characters.domain.CharacterSummary
-import com.jgoodwin.myapplication.characters.presentation.CharacterViewModel
 import com.jgoodwin.myapplication.episodes.domain.GetEpisodesUseCase
 import com.jgoodwin.myapplication.episodes.domain.Episode
 import dagger.hilt.android.lifecycle.HiltViewModel

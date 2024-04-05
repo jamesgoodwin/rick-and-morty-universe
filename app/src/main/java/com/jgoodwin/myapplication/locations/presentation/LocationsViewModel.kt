@@ -2,8 +2,6 @@ package com.jgoodwin.myapplication.locations.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jgoodwin.myapplication.characters.presentation.CharacterViewModel
-import com.jgoodwin.myapplication.episodes.domain.Episode
 import com.jgoodwin.myapplication.locations.domain.GetLocationsUseCase
 import com.jgoodwin.myapplication.locations.domain.LocationDetail
 import dagger.hilt.android.lifecycle.HiltViewModel

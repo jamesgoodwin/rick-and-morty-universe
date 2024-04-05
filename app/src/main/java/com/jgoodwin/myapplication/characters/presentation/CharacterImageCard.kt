@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.jgoodwin.myapplication.characters.domain.CharacterSummary
 import com.jgoodwin.myapplication.domain.Location
-import com.jgoodwin.myapplication.ui.theme.MyApplicationTheme
+import com.jgoodwin.myapplication.ui.theme.RickAndMortyTheme
 
 @Composable
 fun CharacterImageCard(
@@ -107,7 +106,7 @@ fun CharacterImageCard(
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun CharactersScreenPreview() {
-    MyApplicationTheme {
+    RickAndMortyTheme {
         CharacterImageCard(
             CharacterSummary(
                 name = "Rick",

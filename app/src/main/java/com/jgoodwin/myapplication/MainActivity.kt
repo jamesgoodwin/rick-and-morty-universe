@@ -40,6 +40,7 @@ import com.jgoodwin.myapplication.episodes.presentation.EpisodeScreen
 import com.jgoodwin.myapplication.episodes.presentation.EpisodesViewModel
 import com.jgoodwin.myapplication.locations.presentation.LocationsScreen
 import com.jgoodwin.myapplication.locations.presentation.LocationsViewModel
+import com.jgoodwin.myapplication.ui.theme.RickAndMortyTheme
 
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,7 +50,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+            RickAndMortyTheme {
+                MainScreen()
+            }
         }
     }
 }
