@@ -8,7 +8,6 @@ Explore the vast universe of Rick and Morty with this simple Android application
 
 
 ## Features
-
 - **Character Guide**: Get detailed information about every character.
 - **Episode Explorer**: Browse through episodes and their summaries.
 - **Location Insights**: Discover the various planets and dimensions.
