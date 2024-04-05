@@ -30,7 +30,9 @@ fun LocationsScreen(
 ) {
     LazyColumn {
         when (state) {
-            is LocationsViewModel.LocationsViewState.Error -> TODO()
+            is LocationsViewModel.LocationsViewState.Error -> {
+                
+            }
             LocationsViewModel.LocationsViewState.Loading -> {
                 item {
                     CircularProgressIndicator(

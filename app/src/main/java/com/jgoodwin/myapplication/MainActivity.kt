@@ -36,7 +36,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jgoodwin.myapplication.characters.presentation.CharacterScreen
 import com.jgoodwin.myapplication.characters.presentation.CharacterViewModel
-import com.jgoodwin.myapplication.episodes.presentation.EpisodeScreen
+import com.jgoodwin.myapplication.episodes.presentation.EpisodesScreen
 import com.jgoodwin.myapplication.episodes.presentation.EpisodesViewModel
 import com.jgoodwin.myapplication.locations.presentation.LocationsScreen
 import com.jgoodwin.myapplication.locations.presentation.LocationsViewModel
@@ -103,7 +103,7 @@ fun Navigation(navController: NavHostController) {
         composable(NavigationItem.Episodes.route) {
             val episodesViewModel: EpisodesViewModel = hiltViewModel()
             val state by episodesViewModel.state.collectAsStateWithLifecycle()
-            EpisodeScreen(state, onEpisodeCharactersClicked = {})
+            EpisodesScreen(state, onEpisodeCharactersClicked = {})
         }
         composable(NavigationItem.Locations.route) {
             val locationViewModel: LocationsViewModel = hiltViewModel()

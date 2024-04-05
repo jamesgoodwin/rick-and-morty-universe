@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.jgoodwin.myapplication.R
@@ -22,23 +23,22 @@ import com.jgoodwin.myapplication.locations.presentation.ClickableText
 import com.jgoodwin.myapplication.ui.theme.RickAndMortyTheme
 
 @Composable
-fun EpisodeScreen(state: EpisodesViewState, onEpisodeCharactersClicked: (Int) -> Unit) {
-
-    LazyColumn {
-
-        when (state) {
-            is EpisodesViewState.Error -> TODO()
-            is EpisodesViewState.Loading -> {
-                item {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .wrapContentSize(align = Alignment.Center)
-                    )
-                }
-            }
-
-            is EpisodesViewState.Success -> {
+fun EpisodesScreen(state: EpisodesViewState, onEpisodeCharactersClicked: (Int) -> Unit) {
+    when (state) {
+        is EpisodesViewState.Error -> {
+            ListItem(
+                headlineContent = { Text(text = state.message) })
+        }
+        is EpisodesViewState.Loading -> {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(align = Alignment.Center)
+                    .testTag("loading")
+            )
+        }
+        is EpisodesViewState.Success -> {
+            LazyColumn {
                 items(state.results) { episode ->
                     ListItem(headlineContent = { Text(text = episode.name) },
                         supportingContent = {
@@ -55,6 +55,19 @@ fun EpisodeScreen(state: EpisodesViewState, onEpisodeCharactersClicked: (Int) ->
             }
         }
     }
+
+}
+
+
+@Preview(name = "Light Mode")
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun EpisodeErrorPreview() {
+    RickAndMortyTheme {
+        EpisodesScreen(
+            state = EpisodesViewState.Error("Error retrieving results")
+        ) {}
+    }
 }
 
 @Preview(name = "Light Mode")
@@ -62,7 +75,7 @@ fun EpisodeScreen(state: EpisodesViewState, onEpisodeCharactersClicked: (Int) ->
 @Composable
 fun EpisodeScreenResultsPreview() {
     RickAndMortyTheme {
-        EpisodeScreen(
+        EpisodesScreen(
             state = EpisodesViewState.Success(
                 listOf(
                     Episode(
