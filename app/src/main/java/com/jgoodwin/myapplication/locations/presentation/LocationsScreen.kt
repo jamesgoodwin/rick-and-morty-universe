@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.jgoodwin.myapplication.R
@@ -28,22 +29,21 @@ fun LocationsScreen(
     onLocationTypeClicked: (String) -> Unit,
     onLocationDimensionClicked: (String) -> Unit
 ) {
-    LazyColumn {
         when (state) {
             is LocationsViewModel.LocationsViewState.Error -> {
-                
+                ListItem(
+                    headlineContent = { Text(text = state.message) })
             }
-            LocationsViewModel.LocationsViewState.Loading -> {
-                item {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .wrapContentSize(align = Alignment.Center)
-                    )
-                }
+            is LocationsViewModel.LocationsViewState.Loading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(align = Alignment.Center)
+                        .testTag("loading")
+                )
             }
-
             is LocationsViewModel.LocationsViewState.Success -> {
+                LazyColumn {
                 items(state.results) { location ->
                     ListItem(
                         headlineContent = { Text(text = location.name) },
