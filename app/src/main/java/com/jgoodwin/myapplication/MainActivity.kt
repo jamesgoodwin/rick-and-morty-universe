@@ -3,6 +3,7 @@ package com.jgoodwin.myapplication
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -18,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -32,12 +34,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.jgoodwin.myapplication.NavigationItem.Companion.EPISODE_ID_NAVIGATION_PARAM
 import com.jgoodwin.myapplication.characters.presentation.CharacterScreen
 import com.jgoodwin.myapplication.characters.presentation.CharacterViewModel
-import com.jgoodwin.myapplication.domain.Location
 import com.jgoodwin.myapplication.episodes.presentation.EpisodeScreen
+import com.jgoodwin.myapplication.episodes.presentation.EpisodesViewModel
 import com.jgoodwin.myapplication.locations.presentation.LocationsScreen
+import com.jgoodwin.myapplication.locations.presentation.LocationsViewModel
 
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -78,17 +80,10 @@ fun MainScreenPreview() {
     MainScreen()
 }
 
-sealed class NavigationItem(val route: String, val icon: ImageVector, val title: String) {
-    data object Characters : NavigationItem("characters", Icons.Filled.Face, "Characters")
-    data object Episodes :
-        NavigationItem("episodes?episode={episodeId}", Icons.Filled.List, "Episodes")
-
-    data object Locations : NavigationItem("locations", Icons.Filled.Place, "Locations")
-
-    companion object {
-        const val EPISODE_ID_NAVIGATION_PARAM = "{episodeId}"
-    }
-
+sealed class NavigationItem(val route: String, val icon: ImageVector, @StringRes val title: Int) {
+    data object Characters : NavigationItem("characters", Icons.Filled.Face, R.string.characters)
+    data object Episodes : NavigationItem("episodes", Icons.Filled.List, R.string.episodes_title)
+    data object Locations : NavigationItem("locations", Icons.Filled.Place, R.string.locations_title)
 }
 
 @Composable
@@ -99,32 +94,31 @@ fun Navigation(navController: NavHostController) {
             val state by characterViewModel.state.collectAsStateWithLifecycle()
             CharacterScreen(
                 state,
-                { location -> navigateLocation(location, navController) },
-                { episodeId -> navigateEpisode(episodeId, navController) })
+                { location -> navigateLocation(navController) },
+                { episodeId -> navigateEpisode(navController) })
         }
         composable(NavigationItem.Episodes.route) {
-            EpisodeScreen(onEpisodeCharactersClicked = {})
+            val episodesViewModel: EpisodesViewModel = hiltViewModel()
+            val state by episodesViewModel.state.collectAsStateWithLifecycle()
+            EpisodeScreen(state, onEpisodeCharactersClicked = {})
         }
         composable(NavigationItem.Locations.route) {
-            LocationsScreen({}, {}, {})
+            val locationViewModel: LocationsViewModel = hiltViewModel()
+            val state by locationViewModel.state.collectAsState()
+            LocationsScreen(state, {}, {}, {})
         }
     }
 }
 
-fun navigateEpisode(episodeId: Int, navController: NavHostController) {
-    navController.navigate(
-        NavigationItem.Episodes.route.replace(
-            EPISODE_ID_NAVIGATION_PARAM,
-            episodeId.toString()
-        )
-    ) {
+fun navigateEpisode(navController: NavHostController) {
+    navController.navigate(NavigationItem.Episodes.route) {
         popUpTo(navController.graph.id) {
             inclusive = true
         }
     }
 }
 
-fun navigateLocation(location: Location, navController: NavHostController) {
+fun navigateLocation(navController: NavHostController) {
     navController.navigate(NavigationItem.Locations.route) {
         popUpTo(navController.graph.id) {
             inclusive = true
@@ -148,9 +142,7 @@ fun TopBarPreview() {
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-    NavigationBar(
-//        contentColor = Color.White
-    ) {
+    NavigationBar {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
@@ -158,11 +150,11 @@ fun BottomNavigationBar(navController: NavController) {
                 icon = {
                     Icon(
                         imageVector = item.icon,
-                        contentDescription = item.title,
+                        contentDescription = stringResource(item.title),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 },
-                label = { Text(text = item.title) },
+                label = { Text(text = stringResource(item.title)) },
                 alwaysShowLabel = true,
                 selected = currentRoute == item.route,
                 onClick = {

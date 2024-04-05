@@ -14,8 +14,7 @@ data class CharacterSummary(
     val image: String,
     val episode: String,
     val episodeId: Int
-) {
-}
+)
 
 class GetCharactersUseCase(
     private val characterRepository: CharacterRepository,

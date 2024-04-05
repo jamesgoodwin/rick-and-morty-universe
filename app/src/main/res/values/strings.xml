@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Rick And Morty Universe</string>
+    <string name="characters_title">Characters</string>
+    <string name="episodes_title">Episodes</string>
+    <string name="locations_title">Locations</string>
+    <string name="characters">characters</string>
+    <string name="residents">residents</string>
+    <string name="dash_separator">" - "</string>
 </resources>

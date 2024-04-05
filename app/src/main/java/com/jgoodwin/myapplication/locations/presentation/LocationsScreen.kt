@@ -17,47 +17,56 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.jgoodwin.myapplication.R
 
 @Composable
 fun LocationsScreen(
+    state: LocationsViewModel.LocationsViewState,
     onLocationResidentsClicked: (Int) -> Unit,
     onLocationTypeClicked: (String) -> Unit,
     onLocationDimensionClicked: (String) -> Unit
 ) {
-    val locationViewModel: LocationViewModel = hiltViewModel()
-    val state by locationViewModel.state.collectAsState()
-
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
-        if (state.isEmpty()) {
-            item {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(align = Alignment.Center)
-                )
+
+        when (state) {
+            is LocationsViewModel.LocationsViewState.Error -> TODO()
+            LocationsViewModel.LocationsViewState.Loading -> {
+                item {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(align = Alignment.Center)
+                    )
+                }
             }
-        }
-        items(state) { location ->
-            ListItem(
-                headlineContent = { Text(text = location.name) },
-                supportingContent = {
-                    Row {
-                        ClickableText(
-                            text = location.type,
-                            onClick = { onLocationTypeClicked(location.type) })
-                        Text(text = " - ")
-                        ClickableText(text = location.dimension, onClick = { onLocationDimensionClicked(location.dimension)})
-                        Text(text = " - ")
-                        ClickableText(
-                            text = "${location.residents.count()} residents",
-                            onClick = { onLocationResidentsClicked(location.id) })
-                    }
-                },
-            )
-            HorizontalDivider()
+            is LocationsViewModel.LocationsViewState.Success -> {
+                items(state.results) { location ->
+                    ListItem(
+                        headlineContent = { Text(text = location.name) },
+                        supportingContent = {
+                            Row {
+                                val separator = stringResource(id = R.string.dash_separator)
+                                ClickableText(
+                                    text = location.type,
+                                    onClick = { onLocationTypeClicked(location.type) })
+                                Text(text = separator)
+                                ClickableText(
+                                    text = location.dimension,
+                                    onClick = { onLocationDimensionClicked(location.dimension) })
+                                Text(text = separator)
+                                ClickableText(
+                                    text = "${location.residents.count()} ${stringResource(id = R.string.residents)}",
+                                    onClick = { onLocationResidentsClicked(location.id) })
+                            }
+                        },
+                    )
+                    HorizontalDivider()
+                }
+            }
         }
     }
 
