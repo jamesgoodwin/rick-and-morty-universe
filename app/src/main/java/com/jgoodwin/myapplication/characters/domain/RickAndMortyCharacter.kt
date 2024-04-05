@@ -1,7 +1,6 @@
 package com.jgoodwin.myapplication.characters.domain
 
 import com.jgoodwin.myapplication.domain.Location
-
 data class RickAndMortyCharacter(
     val id: Int,
     val name: String,

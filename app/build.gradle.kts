@@ -68,7 +68,6 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("com.google.dagger:hilt-android:2.51")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     kapt("com.google.dagger:hilt-compiler:2.51")
 
     // Navigation
@@ -92,8 +91,12 @@ dependencies {
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
 
-    // Testing
     testImplementation("junit:junit:4.13.2")
+    testImplementation("io.mockk:mockk:1.10.0")
+    testRuntimeOnly("net.bytebuddy:byte-buddy:1.10.21")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
+
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.02"))
@@ -110,5 +113,5 @@ dependencies {
 
 // Allow references to generated code
 kapt {
-    correctErrorTypes=true
+    correctErrorTypes = true
 }
