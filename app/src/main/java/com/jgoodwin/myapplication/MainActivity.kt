@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -85,8 +85,8 @@ fun MainScreenPreview() {
 
 sealed class NavigationItem(val route: String, val icon: ImageVector, @StringRes val title: Int) {
     data object Characters : NavigationItem("characters", Icons.Filled.Face, R.string.characters)
-    data object Episodes : NavigationItem("episodes", Icons.Filled.List, R.string.episodes_title)
-    data object Locations : NavigationItem("locations", Icons.Filled.Place, R.string.locations_title)
+    data object Episodes : NavigationItem("episodes", Icons.Filled.Tv, R.string.episodes_title)
+    data object Locations : NavigationItem("locations", Icons.Filled.Public, R.string.locations_title)
 }
 
 @Composable
