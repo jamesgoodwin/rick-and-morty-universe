@@ -17,10 +17,15 @@ Explore the vast universe of Rick and Morty with this simple Android application
 
 The application is designed with a focus on:
 - **Readability**: Clean codebase with extensive documentation making it easy to understand and navigate.
-- **Maintainability**: Modular architecture and adherence to Android development best practices ensure easy updates and feature additions.
-- **Testability**: Comprehensive unit and UI tests covering critical functionalities, ensuring robustness and reliability.
+- **Maintainability**: Clean architecture and adherence to Android development best practices to ensure easy updates and feature additions.
+- **Testability**: Unit and UI tests covering critical functionalities, ensuring robustness and reliability
+  - Code decoupled from concrete implementation to make code more testable (using Hilt)
+  - Stateless composable UI components for easier testability and compose previews
 - **Scalability**: Efficient use of resources and optimized data handling to support a growing number of users and data volume.
+  - HTTP caching to prevent overfetching of data 
 - **Simplicity**: User-friendly interface, ensuring a seamless and intuitive user experience.
+  - Reuse of Material design UI components
+  - Reuse of Android standard libraries 
 
 ## Getting Started
 
