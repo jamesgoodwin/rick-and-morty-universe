@@ -7,5 +7,4 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class CharacterViewModelTest {
 
 
-
 }
